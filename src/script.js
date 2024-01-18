@@ -21,11 +21,13 @@ document.addEventListener("DOMContentLoaded", function () {
       wrongDay.textContent = "";
     } else if (dayInput.value === "") {
       wrongDay.textContent = "This field is required";
+      dayInput.style.borderColor = "var(--Light-red)";
     } else {
       resultDay.textContent = "--";
       resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongDay.textContent = "Must be a valid Day";
+      dayInput.style.borderColor = "var(--Light-red)";
     }
   }
 
@@ -37,11 +39,13 @@ document.addEventListener("DOMContentLoaded", function () {
       wrongMonth.textContent = "";
     } else if (monthInput.value === "") {
       wrongMonth.textContent = "This field is required";
+      monthInput.style.borderColor = "var(--Light-red)";
     } else {
       resultDay.textContent = "--";
       resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongMonth.textContent = "Must be a valid Month";
+      monthInput.style.borderColor = "var(--Light-red)";
     }
   }
 
@@ -55,13 +59,16 @@ document.addEventListener("DOMContentLoaded", function () {
       wrongYear.textContent = "";
     } else if (yearInput.value === "") {
       wrongYear.textContent = "This field is required";
+      yearInput.style.borderColor = "var(--Light-red)";
     } else if (parseInt(yearInput.value) > currentYear) {
       wrongYear.textContent = "Must be in the past";
+      yearInput.style.borderColor = "var(--Light-red)";
     } else {
       resultDay.textContent = "--";
       resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongYear.textContent = "Must be a valid Year";
+      yearInput.style.borderColor = "var(--Light-red)";
     }
   }
 
