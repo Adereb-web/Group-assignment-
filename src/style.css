@@ -118,6 +118,7 @@ input::placeholder {
   font-style: italic;
   height: fit-content;
   color: var(--Off-black);
+  margin-bottom: -1.3rem;
 }
 
 .result span {
@@ -136,7 +137,7 @@ input::placeholder {
   text-decoration: underline;
   color: var(--Purple);
   background-color: inherit;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 .clear-button:hover {
