@@ -14,24 +14,49 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentDay = date.getDate();
   let currentMonth = date.getMonth() + 1; // Months are zero-based
   let currentYear = date.getFullYear();
+  let inputValid = true;
 
-  function findDay() {
+  const isLeapYear = (day, month, year) => {
+    month = month - 1;
+    fullDate = new Date(year, month, day);
+    return (
+      day == fullDate.getDate() &&
+      month == fullDate.getMonth() &&
+      year == fullDate.getFullYear()
+    );
+  };
+
+  const subtractAge = () => {
+    // Input validation for day
     if (parseInt(dayInput.value) <= 31) {
       resultDay.textContent = Math.abs(parseInt(dayInput.value) - currentDay);
       wrongDay.textContent = "";
     } else if (dayInput.value === "") {
       wrongDay.textContent = "This field is required";
       dayInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     } else {
       resultDay.textContent = "--";
       resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongDay.textContent = "Must be a valid Day";
       dayInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     }
-  }
 
-  function findMonth() {
+    const lastDayOfMonth = new Date(
+      yearInput.value,
+      monthInput.value,
+      0
+    ).getDate();
+
+    if (dayInput.value > lastDayOfMonth) {
+      wrongDay.textContent = "Must be a valid day.";
+      dayInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
+    }
+
+    // Input validation for month
     if (parseInt(monthInput.value) >= 1 && parseInt(monthInput.value) <= 12) {
       const monthDifference = currentMonth - parseInt(monthInput.value);
       resultMonth.textContent =
@@ -40,16 +65,17 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (monthInput.value === "") {
       wrongMonth.textContent = "This field is required";
       monthInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     } else {
       resultDay.textContent = "--";
       resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongMonth.textContent = "Must be a valid Month";
       monthInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     }
-  }
 
-  function findYear() {
+    // Input validation for year
     if (
       parseInt(yearInput.value) <= currentYear &&
       parseInt(yearInput.value) > 1900
@@ -60,26 +86,86 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (yearInput.value === "") {
       wrongYear.textContent = "This field is required";
       yearInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     } else if (parseInt(yearInput.value) > currentYear) {
       wrongYear.textContent = "Must be in the past";
       yearInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     } else {
       resultDay.textContent = "--";
       resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongYear.textContent = "Must be a valid Year";
       yearInput.style.borderColor = "var(--Light-red)";
+      inputValid = false;
     }
-  }
+
+    // Calculate age only if input is valid
+    if (inputValid) {
+      let newYear = Math.abs(currentYear - parseInt(yearInput.value));
+
+      let newMonth = 0;
+      if (currentMonth >= parseInt(monthInput.value)) {
+        newMonth = currentMonth - parseInt(monthInput.value);
+      } else {
+        newYear--;
+        newMonth = 12 + currentMonth - parseInt(monthInput.value);
+      }
+
+      let newDay = 0;
+      if (currentDay >= parseInt(dayInput.value)) {
+        newDay = currentDay - parseInt(dayInput.value);
+      } else {
+        newMonth--;
+        if (
+          isLeapYear(
+            parseInt(dayInput.value),
+            parseInt(monthInput.value),
+            parseInt(yearInput.value)
+          )
+        ) {
+          newDay = 30 + currentDay - parseInt(dayInput.value);
+        } else {
+          newDay = currentDay - parseInt(dayInput.value);
+        }
+
+        if (newMonth < 0) {
+          newMonth = 11;
+          newYear--;
+        }
+        if (newMonth < currentMonth) {
+          newDay++;
+        }
+      }
+
+      resultYear.textContent = newYear;
+      resultMonth.textContent = newMonth;
+      resultDay.textContent = newDay;
+    }
+  };
 
   submitButton.addEventListener("click", function (event) {
     event.preventDefault();
-    findDay();
-    findMonth();
-    findYear();
-    storeResultInLocalStorage();
+    inputValid = true;
+
+    // findDay();
+    // findMonth();
+    // findYear();
+
+    subtractAge();
+
+    //checks if input is valid before calculating
+    if (inputValid) {
+      storeResultInLocalStorage();
+    } else {
+      // Clear result if input is invalid
+      resultDay.textContent = "--";
+      resultMonth.textContent = "--";
+      resultYear.textContent = "--";
+    }
   });
 
+  // store age in local storage
   function storeResultInLocalStorage() {
     const ageResult = {
       years: parseInt(resultYear.textContent),
@@ -87,6 +173,15 @@ document.addEventListener("DOMContentLoaded", function () {
       days: parseInt(resultDay.textContent),
     };
     localStorage.setItem("ageResult", JSON.stringify(ageResult));
+
+    // clear input after saving
+    dayInput.value = "";
+    monthInput.value = "";
+    yearInput.value = "";
+
+    dayInput.style.borderColor = "var(--Light-grey)";
+    monthInput.style.borderColor = "var(--Light-grey)";
+    yearInput.style.borderColor = "var(--Light-grey)";
   }
 
   // Load age result from local storage on page load
