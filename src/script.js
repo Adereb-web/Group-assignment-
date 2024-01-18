@@ -21,35 +21,54 @@ document.addEventListener("DOMContentLoaded", function () {
       wrongDay.textContent = "";
     } else if (dayInput.value === "") {
       wrongDay.textContent = "This field is required";
+      dayInput.style.borderColor = "var(--Light-red)";
     } else {
       resultDay.textContent = "--";
+      resultMonth.textContent = "--";
+      resultYear.textContent = "--";
       wrongDay.textContent = "Must be a valid Day";
+      dayInput.style.borderColor = "var(--Light-red)";
     }
   }
 
   function findMonth() {
-    if (parseInt(monthInput.value) <= 12) {
-      resultMonth.textContent = Math.abs(parseInt(monthInput.value) - currentMonth);
+    if (parseInt(monthInput.value) >= 1 && parseInt(monthInput.value) <= 12) {
+      const monthDifference = currentMonth - parseInt(monthInput.value);
+      resultMonth.textContent =
+        monthDifference >= 0 ? monthDifference : 12 + monthDifference;
       wrongMonth.textContent = "";
     } else if (monthInput.value === "") {
       wrongMonth.textContent = "This field is required";
+      monthInput.style.borderColor = "var(--Light-red)";
     } else {
+      resultDay.textContent = "--";
       resultMonth.textContent = "--";
+      resultYear.textContent = "--";
       wrongMonth.textContent = "Must be a valid Month";
+      monthInput.style.borderColor = "var(--Light-red)";
     }
   }
 
   function findYear() {
-    if (parseInt(yearInput.value) <= currentYear && parseInt(yearInput.value) > 1900) {
-      resultYear.textContent = Math.abs(parseInt(yearInput.value) - currentYear) - 1;
+    if (
+      parseInt(yearInput.value) <= currentYear &&
+      parseInt(yearInput.value) > 1900
+    ) {
+      resultYear.textContent =
+        Math.abs(parseInt(yearInput.value) - currentYear) - 1;
       wrongYear.textContent = "";
     } else if (yearInput.value === "") {
       wrongYear.textContent = "This field is required";
+      yearInput.style.borderColor = "var(--Light-red)";
     } else if (parseInt(yearInput.value) > currentYear) {
       wrongYear.textContent = "Must be in the past";
+      yearInput.style.borderColor = "var(--Light-red)";
     } else {
+      resultDay.textContent = "--";
+      resultMonth.textContent = "--";
       resultYear.textContent = "--";
       wrongYear.textContent = "Must be a valid Year";
+      yearInput.style.borderColor = "var(--Light-red)";
     }
   }
 
@@ -71,17 +90,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Load age result from local storage on page load
-  document.addEventListener("DOMContentLoaded", function () {
-    const storedResult = localStorage.getItem("ageResult");
-    if (storedResult) {
-      const parsedResult = JSON.parse(storedResult);
-      resultYear.textContent = parsedResult.years;
-      resultMonth.textContent = parsedResult.months;
-      resultDay.textContent = parsedResult.days;
-    }
+  const storedResult = localStorage.getItem("ageResult");
+  if (storedResult) {
+    const parsedResult = JSON.parse(storedResult);
+    resultYear.textContent = parsedResult.years;
+    resultMonth.textContent = parsedResult.months;
+    resultDay.textContent = parsedResult.days;
+  }
+});
 
 // CODE FOR DARK MODE STARTS HERE
-    
 // PLEASE DO NOT EDIT
 document.addEventListener("DOMContentLoaded", function () {
   const themeToggler = document.getElementById("themeToggler");
@@ -102,7 +120,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     themeToggler.textContent = isDarkMode ? "Light Mode" : "Dark Mode";
   }
-  });
 });
-
-
