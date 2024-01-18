@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const wrongDay = document.querySelector(".error.day");
   const wrongMonth = document.querySelector(".error.month");
   const wrongYear = document.querySelector(".error.year");
+  const clearButton = document.querySelector(".clear-button");
 
   let date = new Date();
   let currentDay = date.getDate();
@@ -192,6 +193,15 @@ document.addEventListener("DOMContentLoaded", function () {
     resultMonth.textContent = parsedResult.months;
     resultDay.textContent = parsedResult.days;
   }
+
+  //setting clear button
+  clearButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    localStorage.removeItem("ageResult");
+    resultDay.textContent = "--";
+    resultMonth.textContent = "--";
+    resultYear.textContent = "--";
+  });
 });
 
 // CODE FOR DARK MODE STARTS HERE
