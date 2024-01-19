@@ -28,8 +28,21 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const subtractAge = () => {
+    dayInput.addEventListener("input", clearBorder);
+    monthInput.addEventListener("input", clearBorder);
+    yearInput.addEventListener("input", clearBorder);
+
+    function clearBorder() {
+      wrongDay.textContent = "";
+      wrongMonth.textContent = "";
+      wrongYear.textContent = "";
+      dayInput.style.borderColor = "var(--Light-grey)";
+      monthInput.style.borderColor = "var(--Light-grey)";
+      yearInput.style.borderColor = "var(--Light-grey)";
+    }
+
     // Input validation for day
-    if (parseInt(dayInput.value) <= 31) {
+    if (parseInt(dayInput.value) >= 1 && parseInt(dayInput.value) <= 31) {
       resultDay.textContent = Math.abs(parseInt(dayInput.value) - currentDay);
       wrongDay.textContent = "";
     } else if (dayInput.value === "") {

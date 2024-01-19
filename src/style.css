@@ -129,7 +129,7 @@ input::placeholder {
   display: flex;
   justify-content: start;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .clear-button {
@@ -138,10 +138,12 @@ input::placeholder {
   color: var(--Purple);
   background-color: inherit;
   font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .clear-button:hover {
   color: black;
+  transition: 0.3s;
 }
 
 small.error {
@@ -200,5 +202,10 @@ small.error {
 
   .result h1 {
     font-size: 3rem;
+    margin-bottom: -1rem;
+  }
+
+  .clear-button {
+    font-size: 1.2rem;
   }
 }
