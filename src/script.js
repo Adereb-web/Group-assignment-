@@ -94,9 +94,18 @@ document.addEventListener("DOMContentLoaded", function () {
       parseInt(yearInput.value) <= currentYear &&
       parseInt(yearInput.value) > 1900
     ) {
-      resultYear.textContent =
-        Math.abs(parseInt(yearInput.value) - currentYear) - 1;
-      wrongYear.textContent = "";
+      if (
+        parseInt(yearInput.value) === currentYear &&
+        parseInt(monthInput.value) >= currentMonth
+      ) {
+        wrongYear.textContent = "Must be in the past";
+        yearInput.style.borderColor = "var(--Light-red)";
+        inputValid = false;
+      } else {
+        resultYear.textContent =
+          Math.abs(parseInt(yearInput.value) - currentYear) - 1;
+        wrongYear.textContent = "";
+      }
     } else if (yearInput.value === "") {
       wrongYear.textContent = "This field is required";
       yearInput.style.borderColor = "var(--Light-red)";
